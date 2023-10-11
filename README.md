@@ -1,4 +1,4 @@
-# ReStim
+# ReuniensStim
 Code used in experiment investigating effect of nucleus reuniens stimulation on spatial working memory. 
 
 rePower_test: determine theta stimulation frequency for task.
