@@ -4,17 +4,18 @@
     %  or...stem to choice point exit
     %  or...goal box entry to start box entry
 
-% stem2cp: within each trial (minus first trial), when the rat breaks the
+% stem2cp: within each trial (excluding first trial), when the rat breaks the
 % stem ir beam, turn on laser. turn off laser when rat breaks choice exit ir beam
 
-% gb2return: within each trial (minus first trial), when the rat breaks
+% gb2return: within each trial (excluding last trial), when the rat breaks
 % the goal box ir beam, turn on laser. turn off laser when rat enters start box 
 
-% delay: within each trial, when the rat enters the start box, and they just came
+% delay: within each trial (excluding last trial), when the rat enters the start box, and they just came
 % from the return arm or the goal zone, turn on laser for a specific period
 % of time 
     % define short and long delays
-%live tracking as backup if stem and/or goal box beam break not caught
+%live tracking as backup if stem and/or goal box beam break not caught to
+%turn on laser
 
 clear;
 
@@ -171,16 +172,17 @@ end
 % Set the testing day
 question = 'Enter tesing condition [stem/goal/delay]: ';
 testing   = input(question,'s');
-if contains(testing,[{'stem'},{'Stem'},{'goal'},{'Goal'}])
-    laser_delay = ['nS';laser_delay]; % for stem2cp and gb2return days, no laser on trial 1
+if contains(testing,[{'stem'},{'Stem'}])
+    laser_delay = ['nS';laser_delay]; % for stem2cp days, no laser on trial 1
     totalTrials = length(laser_delay); %set up trial number for loop over trials
-elseif contains(testing,[{'delay'},{'Delay'}])
-    laser_delay = [laser_delay;'nS']; 
-    totalTrials = length(laser_delay); %set up trial number for loop over trials (laser won't turn on until rat 
-                                         %enters startbox at the end of trial 1 -- either way will end up w/ 41 trials) 
+elseif contains(testing,[{'delay'},{'Delay'},{'goal'},{'Goal'}])
+    laser_delay = [laser_delay;'nS']; %set up trial number for loop over trials (sb-laser won't turn on until rat 
+    totalTrials = length(laser_delay); %enters startbox at the end of trial 1 -- either way will end up w/ 41 trials)
+                                          
 end
 
 trialOrder = horzcat(num2cell((1:length(laser_delay))'), laser_delay) 
+disp('Did you remember to START the laser?');
 pause; %copy delay order before starting
 
 %% set up
